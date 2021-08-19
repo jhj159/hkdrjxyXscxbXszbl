@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
+    <title>河南科技大学软件学生学生证办理信息</title>
+    <link rel="shortcut icon" href="#" />
+    <link rel="stylesheet" href="css/bootstrap-theme.min.css">
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <style>
+        h3{
+            font-family: "华文琥珀";
+            color: #555555;
+            text-align: center;
+        }
+        .footer{
+            background-color: #f5f5f5;
+            height: 50px;
+            width: 100%;
+        }
+    </style>
+    <script src="js/jquery-1.12.4.min.js"></script>
+    <script src="js/bootstrap.js"></script>
+    <script src="http://pv.sohu.com/cityjson?ie=utf-8"></script>
+    <script>
+        var log=returnCitySN["cip"];
+        $(function () {
+            $("#btn-sub").attr("disabled","disabled");
+            $("#btn-xiugai").attr("disabled","disabled");
+            $("span").hide();
+            $("#modal").hide();
+        })
+        function all() {
+            $("#checkboxid").prop("checked",false);
+            $("#helpCheck").text("").hide();
+            $("#btn-sub").attr("disabled","disabled");
+            $("#btn-xiugai").attr("disabled","disabled");
+        }
+    </script>
+</head>
+<body>
+<div class="container">
+    <div class="header">
+        <h3>河南科技大学软件学院<br>新生学生证信息填写</h3>
+    </div>
+    <div class="main">
+        <form class="form-horizontal">
+            <div class="form-group">
+                <label for="inputZhuanYeBanJi" class="col-sm-2 control-label">专业班级</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" id="inputZhuanYeBanJi" placeholder="软工1811班" oninput="zhuanYeBanJi()">
+                    <span id="helpInputZhuanYeBanJi" class="help-block">请按照要求规范填写，例如：软工1811班。</span>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="inputXueHao" class="col-sm-2 control-label">学号</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" id="inputXueHao" placeholder="181451081112" oninput="xueHao()">
+                    <span id="helpInputXueHao" class="help-block">请按照要求规范填写，例如：181451081112。</span>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="inputXingMing" class="col-sm-2 control-label">姓名</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" id="inputXingMing" placeholder="张三" oninput="XingMing()">
+                    <span id="helpInputXingMing" class="help-block">请按照要求规范填写并且无空格，例如：张三。</span>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="inputJiaTingZhuZhi" class="col-sm-2 control-label">家庭住址</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" id="inputJiaTingZhuZhi" placeholder="河南省焦作市" oninput="jiaTingZhuZhi()">
+                    <span id="JiaTingZhuZhi" class="help-block">请按照要求规范填写并且无空格，例如：北京市/河南省郑州市/河南省洛阳市孟津县。</span>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="inputShengFenZhengHao" class="col-sm-2 control-label">身份证号</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" id="inputShengFenZhengHao" oninput="shenFenZhengHao()">
+                    <span id="helpInputShengFenZhengHao" class="help-block">请按照要求规范填写。</span>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">是否办卡(洛阳本地和不通火车乘汽车的不用办卡）</label>
+                <div class="col-sm-10">
+                    <input type="radio"  name="banka" value="是" onclick="banKa()">是
+                    <input type="radio"  name="banka" value="否" onclick="banKa()">否
+                    <span id="helpBanKa" class="help-block"></span>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">购票区间(距家最近的火车站名，不是地名)</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" id="ChengCheZhongDian" placeholder="郑州" oninput="chengCheQuJian()">
+                    <span id="helpChengCheZhongDian" class="help-block">请按照要求规范填写：例如郑州</span>
+                </div>
+            </div>
+            <div class="checkbox form-group">
+                <!-- Button trigger modal -->
+                <button id="modal" type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal"></button>
+
+                <!-- Modal -->
+                <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                <h4 class="modal-title" id="myModalLabel">河南科技大学学生证信息填写要求</h4>
+                            </div>
+                            <div class="modal-body">
+                                <iframe width="100%" height="100%" frameborder="0"></iframe>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div style="text-align: center;height: 50px"><input id="checkboxid" type="checkbox" style="margin-top: 13px" onclick="checkBox()">本人 已浏览<i style="cursor: pointer" onclick="checkBox(0)">《上述要求》</i>，且所填内容均真<br>实准确符合要求，一切后果本人承担。</div>
+                <span id="helpCheck" class="help-block col-sm-2"></span>
+            </div>
+            <div class="form-group has-success">
+                <div class="col-sm-offset-2 col-sm-10" style="text-align: center">
+                    <input id="btn-sub" type="button" class="btn btn-default" onclick="sub()" value="提交"></input>
+                    <input id="btn-cz" type="button" class="btn btn-default" style="margin-left: 10%" value="重置" onclick=" location.reload()"></input>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<div class="footer">
+    <div class="col-sm-10">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;有问题请联系：软件学院学术创新部</div>
+    <div class="col-sm-12"><hr style="margin: 3px;padding: 0;" size="2px" color="black"></div>
+    <div class="col-sm-10">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;出品：软件学院学术创新部</div>
+</div>
+<script>
+    function zhuanYeBanJi() {
+        var rule=/^软工[0-9]{3,4}班$/;
+        if(rule.test($("#inputZhuanYeBanJi").val())){
+            $("div.form-group").eq(0).removeClass("has-error").addClass("has-success");
+            $("#helpInputZhuanYeBanJi").hide();
+           all();
+        }else{
+            $("div.form-group").eq(0).removeClass("has-success").addClass("has-error");
+            $("#helpInputZhuanYeBanJi").show();
+        }
+    }
+    function xueHao() {
+        var rule=/^[0-9]{12}$/;
+        if(rule.test($("#inputXueHao").val())){
+            $("div.form-group").eq(1).removeClass("has-error").addClass("has-success");
+            $("#helpInputXueHao").hide();
+            all();
+        }else{
+            $("div.form-group").eq(1).removeClass("has-success").addClass("has-error");
+            $("#helpInputXueHao").show();
+        }
+    }
+    function XingMing() {
+        if($("#inputXingMing").val().length==0||$("#inputXingMing").val().indexOf(" ")!=-1){
+            $("div.form-group").eq(2).removeClass("has-success").addClass("has-error");
+            $("#helpInputXingMing").show();
+        }else{
+            $("div.form-group").eq(2).removeClass("has-error").addClass("has-success");
+            $("#helpInputXingMing").hide();
+            all();
+        }
+    }
+    function jiaTingZhuZhi() {
+        var rule1=/省{0,1}县$/;
+        var rule2=/省{0,1}市$/;
+        if (rule1.test($("#inputJiaTingZhuZhi").val())||rule2.test($("#inputJiaTingZhuZhi").val())) {
+            $("div.form-group").eq(3).removeClass("has-error").addClass("has-success");
+            $("#JiaTingZhuZhi").hide();
+            all();
+        } else {
+            $("div.form-group").eq(3).removeClass("has-success").addClass("has-error");
+            $("#JiaTingZhuZhi").show();
+        }
+    }
+    function shenFenZhengHao() {
+        var rule1=/^[0-9]{18}$/;
+        var rule2=/^[0-9]{17}X$/;
+        if (rule1.test($("#inputShengFenZhengHao").val())||rule2.test($("#inputShengFenZhengHao").val())) {
+            $("div.form-group").eq(4).removeClass("has-error").addClass("has-success");
+            $("#helpInputShengFenZhengHao").hide();
+            all();
+        } else {
+            $("div.form-group").eq(4).removeClass("has-success").addClass("has-error");
+            $("#helpInputShengFenZhengHao").show();
+        }
+    }
+    function banKa() {
+        if($("input[name='banka']:checked").val()=="是"){
+            $("div.form-group").eq(5).removeClass("has-error").addClass("has-success");
+            $("div.form-group").eq(6).removeClass("has-success");
+            $('#ChengCheZhongDian').val("").removeAttr("disabled");
+            all();
+        }
+        else if($("input[name='banka']:checked").val()=="否"){
+            $("div.form-group").eq(5).removeClass("has-error").addClass("has-success");
+            $("div.form-group").eq(6).removeClass("has-error").addClass("has-success");
+            $("#ChengCheZhongDian").val("无").attr("disabled","disabled");
+            $("#helpChengCheZhongDian").hide();
+        }else{
+            $("div.form-group").eq(5).removeClass("has-success").addClass("has-error");
+            $("div.form-group").eq(6).removeClass("has-success").addClass("has-error");
+            $('#ChengCheZhongDian').val("").removeAttr("disabled");
+        }
+    }
+    function chengCheQuJian() {
+        if($("#ChengCheZhongDian").val().length!=0&&$("#ChengCheZhongDian").val().indexOf("站")==-1&&$("#ChengCheZhongDian").val().indexOf("洛阳")==-1){
+            $("div.form-group").eq(6).removeClass("has-error").addClass("has-success");
+            $("#helpChengCheZhongDian").hide();
+            all();
+        }
+        else{
+            $("div.form-group").eq(6).removeClass("has-success").addClass("has-error");
+            $("#helpChengCheZhongDian").show();
+        }
+    }
+    var sum=0;
+    function checkBox() {
+        $("iframe").attr("src","text/1.txt?"+Math.random());
+        if (arguments.length > 0) {
+            $("#modal").trigger("click");
+            sum++;
+        }
+        sum++;
+        if (sum == 1) {
+            $("#modal").trigger("click");
+        }
+        if ($("#checkboxid").is(':checked')) {
+            $("div.form-group").eq(7).removeClass("has-error").addClass("has-success");
+            $("#helpCheck").text("").hide();
+            if ($("div.has-success").length == 9) {
+                if ($("#inputZhuanYeBanJi").val().length == 6) {
+                    var str = "0" + $("#inputZhuanYeBanJi").val().substring(4, 5);
+                    if ($("#inputZhuanYeBanJi").val().substring(2, 4) == $("#inputXueHao").val().substring(0, 2) && str == $("#inputXueHao").val().substring(8, 10)) {
+                        $("#btn-sub").removeAttr("disabled");
+                        $("#btn-xiugai").removeAttr("disabled");
+                        //$("input:not([type='button'],:last)").attr("disabled","disabled");
+                    } else {
+                        $("div.form-group").eq(0).removeClass("has-success").addClass("has-error");
+                        $("div.form-group").eq(1).removeClass("has-success").addClass("has-error");
+                        $("div.form-group").eq(7).removeClass("has-success").addClass("has-error");
+                        $("#helpCheck").text("专业班级或学号有误请修改").show();
+                    }
+                } else {
+                    var str = $("#inputZhuanYeBanJi").val().substring(4, 6);
+                    if ($("#inputZhuanYeBanJi").val().substring(2, 4) == $("#inputXueHao").val().substring(0, 2) && str == $("#inputXueHao").val().substring(8, 10)) {
+                        $("#btn-sub").removeAttr("disabled");
+                        $("#btn-xiugai").removeAttr("disabled");
+                        //$("input:not([type='button'],:last)").attr("disabled","disabled");
+                    } else {
+                        $("div.form-group").eq(0).removeClass("has-success").addClass("has-error");
+                        $("div.form-group").eq(1).removeClass("has-success").addClass("has-error");
+                        $("div.form-group").eq(7).removeClass("has-success").addClass("has-error");
+                        $("#helpCheck").text("专业班级或学号有误请同时修改").show();
+                    }
+                }
+            }
+            else {
+                var notsuccess = $("div.form-group:not('.has-success')");
+                for (var i = 0; i < notsuccess.length; i++) {
+                    notsuccess.eq(i).removeClass("has-error").addClass("has-error").find("span").show();
+                }
+                $("div.form-group").eq(7).removeClass("has-success").addClass("has-error");
+                $("#helpCheck").text("请查看上述要求并同意后，勾选").show();
+                $("#checkboxid").prop("checked",false);
+            }
+        }
+        else {
+            $("#btn-sub").attr("disabled", "disabled");
+            $("#btn-xiugai").attr("disabled", "disabled");
+            $("div.form-group").eq(7).removeClass("has-success").addClass("has-error");
+            $("#helpCheck").text("请查看上述要求并同意后，勾选").show();
+            //$("input:not([type='button'],:last)").removeAttr("disabled");
+            if($("input[name='banka']:checked").val()=="是"){
+                $("div.form-group").eq(5).removeClass("has-error").addClass("has-success");
+                $("div.form-group").eq(6).removeClass("has-error").addClass("has-success");
+                $('#ChengCheZhongDian').removeAttr("disabled");
+            }
+            else if($("input[name='banka']:checked").val()=="否"){
+                $("div.form-group").eq(5).removeClass("has-error").addClass("has-success");
+                $("div.form-group").eq(6).removeClass("has-error").addClass("has-success");
+                $("#ChengCheZhongDian").val("无").attr("disabled","disabled");
+                $("#helpChengCheZhongDian").hide();
+            }
+        }
+    }
+    function sub() {
+            $.ajax({
+                url:"/hkdrjxy/insertStudent.do",
+                type:"post",
+                datatype:"json",
+                data:{
+                    zhuanYeBanJi:$("#inputZhuanYeBanJi").val(),
+                    xueHao:$("#inputXueHao").val(),
+                    xingMing:$("#inputXingMing").val(),
+                    jiaTingZhuZhi:$("#inputJiaTingZhuZhi").val(),
+                    shenFenZhengHao:$("#inputShengFenZhengHao").val(),
+                    shiFouBanKa:$("input[name='banka']:checked").val(),
+                    chengCheQuJian:$("#ChengCheZhongDian").val(),
+                    log:log
+                },
+                success:function (result) {
+                    console.log(result.ret_code);
+                    if(result.ret_code=="0000"){
+                        window.location.href="/hkdrjxy/welcome.html";
+                    }else{
+                        window.location.href="/hkdrjxy/error.html";
+                    }
+                },
+                error:function () {
+                    window.location.href="/hkdrjxy/error.html";
+                }
+            })
+    }
+</script>
+</body>
+</html>

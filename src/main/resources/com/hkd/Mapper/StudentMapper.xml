@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hkd.Mapper.StudentMapper">
+    <insert id="insertStudent" parameterType="com.hkd.Pojo.Student">
+        <selectKey keyProperty="id" resultType="java.lang.Integer" order="BEFORE">
+            select if(max(id+0) is null,1,max(id+0)+1) as newid from student
+        </selectKey>
+        insert into student(id,zhuanYeBanJi,xueHao,xingMing,jiaTingZhuZhi,shenFenZhengHao,shiFouBanKa,log,chengCheQuJian) values(#{id},#{zhuanYeBanJi},#{xueHao},#{xingMing},#{jiaTingZhuZhi},#{shenFenZhengHao},#{shiFouBanKa},#{log},#{chengCheQuJian});
+    </insert>
+    <select id="getStudent" resultType="com.hkd.Pojo.Student">
+        select * from student;
+    </select>
+</mapper>

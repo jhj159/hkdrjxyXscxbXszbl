@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="">
+<head>
+    <meta charset="UTF-8">
+    <title>学生证办理后台</title>
+</head>
+<link rel="shortcut icon" href="#" />
+<link rel="stylesheet" href="css/bootstrap-theme.min.css">
+<link rel="stylesheet" href="css/bootstrap.min.css">
+<style>
+    h3{
+        font-family: "华文琥珀";
+        color: #555555;
+        text-align: center;
+    }
+    .footer{
+        background-color: #f5f5f5;
+        height: 50px;
+        width: 100%;
+    }
+</style>
+<script src="js/jquery-1.12.4.min.js"></script>
+<script src="js/bootstrap.js"></script>
+<script src="http://pv.sohu.com/cityjson?ie=utf-8"></script>
+<script type="text/javascript" src="js/jszip.min.js"></script>
+<script type="text/javascript" src="js/excel-gen.js"></script>
+<script type="text/javascript" src="js/FileSaver.js"></script>
+<script>
+    $(document).ready(function () {
+        $.ajax({
+            url:"/hkdrjxy/getStudent.do",
+            type:"post",
+            success:function (result) {
+                var job="<thead> <tr>" +
+                    "        <th>序号</th>" +
+                    "        <th>专业班级</th>" +
+                    "        <th>学号</th>" +
+                    "        <th>姓名</th>" +
+                    "        <th>家庭住址</th>" +
+                    "        <th>身份证号</th>" +
+                    "        <th>是否办卡</th>" +
+                    "        <th>入学时间</th>" +
+                    "        <th>学制</th>" +
+                    "        <th>ip地址</th>" +
+                    "        <th>乘车区间</th>" +
+                    "    </tr></thead><tbody>";
+                for (var student in result){
+                    job+="<tr>" +
+                        "<td>"+result[student].id+"</td>" +
+                        "<td>"+result[student].zhuanYeBanJi+"</td>" +
+                        "<td>'"+result[student].xueHao+"</td>" +
+                        "<td>"+result[student].xingMing+"</td>" +
+                        "<td>"+result[student].jiaTingZhuZhi+"</td>" +
+                        "<td>'"+result[student].shenFenZhengHao+"</td>" +
+                        "<td>"+result[student].shiFouBanKa+"</td>" +
+                        "<td>"+result[student].ruXueShiJian+"</td>" +
+                        "<td>"+result[student].xueZhi+"</td>" +
+                        "<td>"+result[student].log+"</td>" +
+                        "<td>"+result[student].chengCheQuJian+"</td>" +
+                        "</tr>"
+                }
+                $("#myTable").html(job+"</tbody>");
+            },
+            error:function () {
+                alert("请重试！")
+            }
+        });
+        $("#con").hide();
+    })
+</script>
+<body>
+<h3>学生证办理后台管理</h3>
+<div id="wrap">
+    <form>
+        <div class="form-group">
+            <label for="exampleInputEmail1">账号</label>
+            <input type="email" class="form-control" id="exampleInputEmail1" placeholder="账号">
+        </div>
+        <div class="form-group">
+            <label for="exampleInputPassword1">密码</label>
+            <input type="password" class="form-control" id="exampleInputPassword1" placeholder="密码">
+        </div>
+        <button type="button" class="btn btn-default" id="dengLu">登陆</button>
+    </form>
+</div>
+<script>
+    $(dengLu).click(function () {
+        if($("#exampleInputEmail1").val()=="hkdrjxy"&&$("#exampleInputPassword1").val()=="hkdrjxy"){
+            $("#wrap").hide();
+            $("#con").show();
+        }else{
+            alert("账号密码不正确");
+        }
+    })
+</script>
+<div id="con">
+<h3>学生证办理要求如下：</h3>
+<div style="text-align: center">
+    <textarea rows="20" cols="100" id="txt"></textarea>
+    <button type="button" class="btn btn-info" id="tiJiao">提交</button>
+</div>
+<h3>已获取信息如下：</h3>
+<div>
+    <button type="button" class="btn btn-info" id="daoChu">导出</button>
+</div>
+<table class="table table-striped" id="myTable">
+
+</table>
+</div>
+<script>
+        $("#daoChu").click(function () {
+            var excel=new ExcelGen({
+                "src_id":"myTable",
+                "show_header":true
+            });
+            excel.generate();
+        });
+        $("#tiJiao").click(function () {
+            $.ajax({
+                url:"/hkdrjxy/insertTxt.do",
+                type:"post",
+                datatype:"json",
+                data:{
+                    txt:$("#txt").val()
+                },
+                success: function () {
+                    $("#txt").val("");
+                    alert("信息提交成功。")
+                },
+                error: function () {
+                    alert("信息提交失败,请重新提交。")
+                }
+            })
+        })
+</script>
+</body>
+</html>
